@@ -1,0 +1,31 @@
+{% extends 'basehome.html' %}
+{% load static %}
+<!-- O arquivo index extende o o base.html-->
+{% block content %}
+
+    <!-- Charts Section Start -->
+    {% include 'charts.html' %}
+    <!-- Charts Section End -->
+
+
+    <!-- Footer Section Start -->
+    {% include 'footer.html' %}
+    <!-- Footer Section End -->
+
+    {% endblock %}
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src={% static 'js/jquery-min.js' %}></script>
+    <script src={% static 'js/popper.min.js' %}></script>
+    <script src={% static 'js/bootstrap.min.js' %}></script>
+    <script src={% static 'js/owl.carousel.min.js' %}></script>
+    <script src={% static 'js/wow.js' %}></script>
+    <script src={% static 'js/jquery.nav.js' %}></script>
+    <script src={% static 'js/scrolling-nav.js' %}></script>
+    <script src={% static 'js/jquery.easing.min.js' %}></script>  
+    <script src={% static 'js/main.js' %}></script>
+    <script src={% static 'js/form-validator.min.js' %}></script>
+    <script src={% static 'js/contact-form-script.min.js' %}></script>
+      
+  </body>
+</html>
+

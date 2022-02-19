@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+<!-- O arquivo index extende o o base.html-->
+{% load static%}
+{% block content %}
+<!-- Tudo que está abaixo será colocado como conteúdo -->
+    {% if request.user.is_authenticated %}
+
+    {% else %}
+    <!-- About Section start -->
+    {% include 'sobre.html' %}
+    <!-- About Section End -->
+
+    <!-- Footer Section Start -->
+    {% include 'footer.html' %}
+    <!-- Footer Section End -->
+
+    
+    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+    {% endif %}
+  {% endblock %}
