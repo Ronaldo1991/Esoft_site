@@ -68,7 +68,7 @@ static3==0.7.0
 #system-service==0.3
 systemd-python==234
 typing_extensions==4.0.1
-ubuntu-advantage-tools==27.5
+#ubuntu-advantage-tools==27.5
 ubuntu-drivers-common==0.0.0
 ufw==0.36
 Unidecode==1.0.22
