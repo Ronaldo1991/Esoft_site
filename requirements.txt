@@ -65,7 +65,7 @@ six==1.11.0
 soupsieve==2.3.1
 sqlparse==0.4.2
 static3==0.7.0
-system-service==0.3
+#system-service==0.3
 systemd-python==234
 typing_extensions==4.0.1
 ubuntu-advantage-tools==27.5
