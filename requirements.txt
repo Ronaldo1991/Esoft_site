@@ -59,7 +59,7 @@ requests==2.26.0
 requests-unixsocket==0.1.5
 schedule==1.1.0
 SecretStorage==2.3.1
-sessioninstaller==0.0.0
+#sessioninstaller==0.0.0
 setproctitle==1.1.10
 six==1.11.0
 soupsieve==2.3.1
