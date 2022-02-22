@@ -11,7 +11,7 @@ click==6.7
 #command-not-found==0.3
 configobj==5.0.6
 #cryptography==2.1.4
-#cupshelpers==1.0
+cupshelpers==1.0
 #defer==1.0.6
 distlib==0.3.4
 dj-static==0.0.6
