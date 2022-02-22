@@ -44,7 +44,7 @@ pycrypto==2.6.1
 pycups==1.9.73
 pycurl==7.43.0.1
 #PyGObject==3.26.1
-PyICU==1.9.8
+#PyICU==1.9.8
 PyMySQL==1.0.2
 pyparted==3.11.1
 python-apt==1.6.5+ubuntu0.7
