@@ -47,7 +47,7 @@ pycurl==7.43.0.1
 #PyICU==1.9.8
 PyMySQL==1.0.2
 #pyparted==3.11.1
-python-apt==1.6.5+ubuntu0.7
+#python-apt==1.6.5+ubuntu0.7
 python-debian==0.1.32
 python-xapp==1.8.1
 python-xlib==0.20
