@@ -33,7 +33,7 @@ keyrings.alt==3.0
 Mako==1.0.7
 #MarkupSafe==1.0
 netifaces==0.10.4
-onboard==1.4.1
+#onboard==1.4.1
 pexpect==4.2.1
 Pillow==8.0.0
 platformdirs==2.4.0
