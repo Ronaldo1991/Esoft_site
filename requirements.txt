@@ -70,7 +70,7 @@ systemd-python==234
 typing_extensions==4.0.1
 #ubuntu-advantage-tools==27.5
 #ubuntu-drivers-common==0.0.0
-ufw==0.36
+#ufw==0.36
 Unidecode==1.0.22
 urllib3==1.26.7
 virtualenv==20.13.0
