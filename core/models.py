@@ -1,6 +1,6 @@
 from django.db import models
 import uuid
-
+import datetime
 
 # O AbstractBaseUser tem menos funcionalidades que o AbstractUser
 # Por isso utilizamos o AbstractUser
@@ -100,7 +100,7 @@ class CustomUsuario(AbstractUser):
 
 class Base(models.Model):
     id = models.AutoField(primary_key=True, max_length=100)
-    criados = models.DateField('Criação', auto_now_add=True)
+    criados = models.DateTimeField('Criação', default=datetime.datetime.now())
     modificado = models.DateField('Atualização', auto_now=True)
     
 
@@ -121,4 +121,24 @@ class Produto(Base):
     def __str__(self):
         return self.nome
     
-    objects = UsuarioManager() 
+    objects = UsuarioManager()
+
+class HistoricoProduto(Base):
+    nome = models.CharField(max_length=30, default='Desconhecido')
+    preco = models.DecimalField(max_digits=100, decimal_places=2)
+    estoque = models.IntegerField()
+    dia = models.IntegerField(default=0)
+    hora = models.IntegerField(default=0)
+    mes = models.IntegerField(default=0)
+    ano = models.IntegerField(default=0)
+
+
+
+    class Meta:
+        verbose_name = 'Historico_Produto'
+        verbose_name_plural = 'Historico_Produtos'
+      
+    def __str__(self):
+        return self.nome
+    
+    objects = UsuarioManager()

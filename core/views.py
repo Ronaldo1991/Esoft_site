@@ -4,11 +4,13 @@ from django.views import View
 from django.views.generic.base import TemplateView
 from core.models import CustomUsuario
 from core.models import Produto
+from core.models import HistoricoProduto
 from django.db.models import F
 from django.contrib.auth import authenticate
 from django.contrib.auth import logout, login
 from chartjs.views.lines import BaseLineChartView
 from random import randint
+import datetime
 
 
 class AcountRegister(View):
@@ -120,8 +122,9 @@ class Login(View):
 
 
 class Logout(View):
-    print("Entrou no Logout")
+    
     def get(self, request):
+        print("Entrou no Logout")
         logout(request)
         return render(request, "index.html")
 
@@ -207,6 +210,19 @@ class ProdutoView(TemplateView, View):
                 try:
                     produto.update(nome=nome, preco=preco, estoque=estoque)
                     print(produto)
+                    dia = int(datetime.datetime.now().day)
+                    hora = int(datetime.datetime.now().hour)
+                    ano = int(datetime.datetime.now().year)
+                    mes = int(datetime.datetime.now().month)
+                    historico_produto = HistoricoProduto.objects.create(nome=nome, preco=preco, estoque=estoque, dia=dia, hora=hora, ano=ano, mes=mes)
+                    historico_produto.save()
+                    if not historico_produto:
+                        context = {
+                            'produto_falha': 'Houve falha no Histórico do Produto.'
+                        }
+                        context['produtos'] = Produto.objects.order_by(F('nome').asc(nulls_last=True)).all()
+                        return render(request, 'produtos.html', context)
+                    print(historico_produto)
                 except:
                     context = {
                         'produto_falha': 'Houve um erro no momento de editar o produto.'
@@ -238,6 +254,19 @@ class ProdutoView(TemplateView, View):
                 return render(request, 'produtos.html', context)
             else:
                 produto.delete()
+                dia = int(datetime.datetime.now().day)
+                hora = int(datetime.datetime.now().hour)
+                ano = int(datetime.datetime.now().year)
+                mes = int(datetime.datetime.now().month)
+                historico_produto = HistoricoProduto.objects.create(nome=nome, preco=0, estoque=0, dia=dia, hora=hora, ano=ano, mes=mes)
+                historico_produto.save()
+                if not historico_produto:
+                    context = {
+                        'produto_falha': 'Houve falha no Histórico do Produto.'
+                    }
+                    context['produtos'] = Produto.objects.order_by(F('nome').asc(nulls_last=True)).all()
+                    return render(request, 'produtos.html', context)
+                print(historico_produto)
                 if not produto:
                     context = {
                         'produto_sucesso': 'Produto deletado com sucesso.'
@@ -259,6 +288,7 @@ class ProdutoView(TemplateView, View):
             try:              
                 lista = list(request.POST.keys())
                 produto = Produto.objects.filter(nome=lista[2])
+                
             except IndexError:
                 context = {
                     'produto_inexistente': 'O produto não existe procure outro.'
@@ -267,6 +297,19 @@ class ProdutoView(TemplateView, View):
                 return render(request, 'produtos.html', context)
             else:
                 produto.delete()
+                dia = int(datetime.datetime.now().day)
+                hora = int(datetime.datetime.now().hour)
+                ano = int(datetime.datetime.now().year)
+                mes = int(datetime.datetime.now().month)
+                historico_produto = HistoricoProduto.objects.create(nome=lista[2], preco=0, estoque=0, dia=dia, hora=hora, ano=ano, mes=mes)
+                historico_produto.save()
+                if not historico_produto:
+                    context = {
+                        'produto_falha': 'Houve falha no Histórico do Produto.'
+                    }
+                    context['produtos'] = Produto.objects.order_by(F('nome').asc(nulls_last=True)).all()
+                    return render(request, 'produtos.html', context)
+                print(historico_produto)
                 if not produto:
                     context = {
                         'produto_sucesso': 'Produto deletado com sucesso.'
@@ -331,6 +374,19 @@ class ProdutoView(TemplateView, View):
                 novoProduto = Produto.objects.create(nome=nome, preco=preco, estoque=estoque)
                 novoProduto.save()
                 verifica_produto = Produto.objects.get(nome=request.POST['nome'])
+                dia = int(datetime.datetime.now().day)
+                hora = int(datetime.datetime.now().hour)
+                ano = int(datetime.datetime.now().year)
+                mes = int(datetime.datetime.now().month)
+                historico_produto = HistoricoProduto.objects.create(nome=nome, preco=preco, estoque=estoque, dia=dia, hora=hora, ano=ano, mes=mes)
+                historico_produto.save()
+                if not historico_produto:
+                    context = {
+                        'produto_falha': 'Houve falha no Histórico do Produto.'
+                    }
+                    context['produtos'] = Produto.objects.order_by(F('nome').asc(nulls_last=True)).all()
+                    return render(request, 'produtos.html', context)
+                print(historico_produto)
                 if verifica_produto:
                     context = {
                         'produto_sucesso': 'Produto cadastrado com sucesso.'
@@ -347,66 +403,67 @@ class ProdutoView(TemplateView, View):
 
 class DadosJSONView(BaseLineChartView):
 
-    def get_labels(self):
-        """Retorna 12 labels para a representação do x"""
-        labels = [
-            "Janeiro",
-            "Fevereiro",
-            "Março",
-            "Abril",
-            "Maio",
-            "Junho",
-            "Julho",
-            "Agosto",
-            "Setembro",
-            "Outubro",
-            "Novembro",
-            "Dezembro",
-        ]
 
+    def get_labels(self):
+        """Return 12 labels for axis x."""
+        global labels
+        if datetime.datetime.now().month  in [1,3,5,7,8,10,12]:
+            labels = [
+            "01","02","03","04","05","06","07","08","09","10",
+            "11","12","13","14","15","16","17","18","19","20",
+            "21","22","23","24","25","26","27","28","29","30",
+            "31",
+        ]
+        
+        elif datetime.datetime.now().month == 2:
+            labels = [
+            "01","02","03","04","05","06","07","08","09","10",
+            "11","12","13","14","15","16","17","18","19","20",
+            "21","22","23","24","25","26","27","28",
+        ]
+        else:            
+            labels = [
+            "01","02","03","04","05","06","07","08","09","10",
+            "11","12","13","14","15","16","17","18","19","20",
+            "21","22","23","24","25","26","27","28","29","30",
+        ]
         return labels
     
     def get_providers(self):
-        """Retorna os nome dos datasets."""
-        datasets = [
-            "Programação para Leigos",
-            "Algoritmos e Lógica de Programação",
-            "Programação em C",
-            "Programação em Java",
-            "Programação Python",
-            "Banco de Dados"
-        ]
+        """Return datasets."""
+        lista = list(HistoricoProduto.objects.order_by().values_list('nome').distinct())
+        # Getting only distinct Objects using field nome
+        datasets = [i for i in lista]
+        print(datasets)
         return datasets
     
     def get_data(self):
         """
-        Retorna 6 datasets para plotar o gráfico.
+        Return 6 datasets for graphic plotage.
 
-        Cada linha representa um dataset.
-        Cada coluna representa uma label.
+        Each line is dataset.
+        Each Column is a Label.
 
-        A quantidade de dados precisa ser igual aos datasets/labels
-
-        12 labels, então colunas.
-        6 datasets, então 6 linhas.
+        12 labels, so 12 columns.
+        6 datasets, so 6 lines.
         """
+        global labels
+        # print(labels)
         dados = []
-        for c in range(6):
-            for l in range(12):
-                dado = [
-                    randint(1,200),
-                    randint(1,200),
-                    randint(1,200),
-                    randint(1,200),
-                    randint(1,200),
-                    randint(1,200),
-                    randint(1,200),
-                    randint(1,200),
-                    randint(1,200),
-                    randint(1,200),
-                    randint(1,200),
-                    randint(1,200),
-                    randint(1,200),
-                ]
+        lista = list(HistoricoProduto.objects.order_by().values_list('nome').distinct())
+        # dados_dia = list(HistoricoProduto.objects.order_by(F('criados').asc(nulls_last=True)).values_list('modificado','nome'))
+        # print(dados_dia[0][0])
+        # print(int(str(dados_dia[0][0]).split("-")[-1]))
+        dia = int(datetime.datetime.now().day)
+        ano = int(datetime.datetime.now().year)
+        # print(dia)
+        # print(dados_dia)
+        # print(len(lista))
+        dados_mes = list(HistoricoProduto.objects.all())
+        filtrados = HistoricoProduto.objects.filter(dia=dia, ano=ano)
+        print(filtrados)
+        for c in range(0,len(lista)):
+            for l in range(0,len(labels)):
+                dado = [randint(1,200) for i in range(1,(dia+1))]
             dados.append(dado)
         return dados
